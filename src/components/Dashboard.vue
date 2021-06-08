@@ -1,6 +1,8 @@
 <template>
   <div class="dashboard">
-    <button @click="$emit('start')">Start</button>
+    <button v-if="showBtn" class="btn-start" @click="$emit('start')">
+      Start
+    </button>
     <p>Round: {{ round }}</p>
     <div>
       <p>Choose your complexility</p>
@@ -34,7 +36,7 @@
             value="400"
             @change="chooseSeverity"
           />
-          <label for="sev2">death</label>
+          <label for="sev2">hard</label>
         </li>
       </ul>
     </div>
@@ -46,6 +48,9 @@ export default {
   props: {
     round: {
       type: Number
+    },
+    showBtn: {
+      type: Boolean
     }
   },
   methods: {

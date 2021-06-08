@@ -1,24 +1,29 @@
 <template>
   <div id="app">
-    <div class="sections">
-      <game-section
-        v-for="(color, index) in sections"
-        :color="color"
-        :key="index"
-        :active-input="index == currentShow"
-        :id="index"
-        @click="click"
+    <div class="game-container">
+      <div class="sections" v-if="!isWrong">
+        <game-section
+          v-for="(color, index) in sections"
+          :color="color"
+          :key="index"
+          :active-input="index == currentShow"
+          :id="index"
+          @click="click"
+        />
+      </div>
+      <div class="defeat" v-else>
+        <div class="defeat__title">
+          You defeated.
+        </div>
+      </div>
+
+      <dashboard
+        @start="start"
+        @chooseSeverity="chooseSeverity"
+        :round="round"
+        :show-btn="!isStarted"
       />
     </div>
-
-    {{ currentShow }}
-    {{ sequel }}
-    <p>wrong: {{ isWrong }}</p>
-    <dashboard
-      @start="restart"
-      @chooseSeverity="chooseSeverity"
-      :round="round"
-    />
   </div>
 </template>
 <script>
@@ -49,13 +54,22 @@ export default {
     /* isWrong: function(val) {
       console.log('is wrong watch')
       console.log(val)
-      if (val) {
-        this.clear()
-        this.restart()
-      } else {
-        this.round++
-        this.restart()
+
+      if (this.isStarted) {
+        if (val) {
+          this.clear()
+          this.isStarted = false
+          clearTimeout(this.isClickedTimer)
+        } else {
+          if (this.playerSequel.length == this.sequel.length) {
+            this.playerSequel = []
+            this.round++
+            this.restart()
+          }
+        }
       }
+
+      clearTimeout(this.isClickedTimer)
     }, */
     playerSequel: function() {
       console.log('player seq watch')
@@ -68,14 +82,19 @@ export default {
 
         this.isWrong = isWrong
 
-        if (isWrong) {
-          this.clear()
-          this.restart()
-        } else {
-          if (this.playerSequel.length == this.sequel.length) {
-            this.playerSequel = []
-            this.round++
-            this.restart()
+        console.log('is started')
+        console.log(this.isStarted)
+        if (this.isStarted) {
+          if (isWrong) {
+            this.clear()
+            this.isWrong = true
+            clearTimeout(this.isClickedTimer)
+          } else {
+            if (this.playerSequel.length == this.sequel.length) {
+              this.playerSequel = []
+              this.round++
+              this.restart()
+            }
           }
         }
 
@@ -105,6 +124,11 @@ export default {
       this.isWrong = false
       this.isClicked = false
     },
+    start: function() {
+      this.isStarted = true
+      this.clear()
+      this.restart()
+    },
     restart: function() {
       console.log('restart')
 
@@ -120,6 +144,7 @@ export default {
           this.currentIndex = 0
           this.isShown = true
           this.currentShow = null
+          this.isShowing = false
           this.checkClicked()
         } else {
           this.playSound()
@@ -148,11 +173,14 @@ export default {
       console.log('setted checker clicker')
       this.isClicked = false
       this.isClickedTimer = setTimeout(() => {
-        if (!this.isClicked) this.isWrong = true
+        if (!this.isClicked) {
+          this.clear()
+          this.isWrong = true
+        }
       }, this.severity)
     },
     click: function(id) {
-      if (!this.isShowing) {
+      if (!this.isShowing && this.isStarted) {
         this.isClicked = true
         clearTimeout(this.isClickedTimer)
         this.checkClicked()

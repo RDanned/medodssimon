@@ -1,14 +1,33 @@
 #app {
-  max-width: 1200px;
+  max-width: 500px;
   margin-left: auto;
   margin-right: auto;
   color: #2c3e50;
+  margin-top: 30vh;
+}
+
+.game-container {
+  display: flex;
+  justify-content: space-between;
 }
 
 .sections {
   width: 200px;
   display: flex;
   flex-wrap: wrap;
+}
+
+.dashboard {
+  position: relative;
+}
+
+.btn-start {
+  position: absolute;
+  left: -110px;
+  top: 45%;
+  width: 100px;
+  height: 30px;
+  font-size: 20px;
 }
 
 .section {
@@ -39,7 +58,7 @@
   &.green {
     background-color: #00ac00;
     &.active, &:hover {
-      background-color: green;
+      background-color: green; 
       border: 3px solid black;
     }
   }
@@ -54,5 +73,13 @@
   &.gray {
     background-color: gray;
   }
+}
 
+.defeat {
+  width: 200px;
+  height: 200px;
+  background-color: gray;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
