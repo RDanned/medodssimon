@@ -3,7 +3,7 @@
     <button v-if="showBtn" class="btn-start" @click="$emit('start')">
       Start
     </button>
-    <p>Round: {{ round }}</p>
+    <p class="round-counter">Round: {{ round }}</p>
     <div>
       <p>Choose your complexility</p>
       <ul>

@@ -51,26 +51,6 @@ export default {
     }
   },
   watch: {
-    /* isWrong: function(val) {
-      console.log('is wrong watch')
-      console.log(val)
-
-      if (this.isStarted) {
-        if (val) {
-          this.clear()
-          this.isStarted = false
-          clearTimeout(this.isClickedTimer)
-        } else {
-          if (this.playerSequel.length == this.sequel.length) {
-            this.playerSequel = []
-            this.round++
-            this.restart()
-          }
-        }
-      }
-
-      clearTimeout(this.isClickedTimer)
-    }, */
     playerSequel: function() {
       console.log('player seq watch')
       if (this.playerSequel != 0) {
@@ -82,8 +62,6 @@ export default {
 
         this.isWrong = isWrong
 
-        console.log('is started')
-        console.log(this.isStarted)
         if (this.isStarted) {
           if (isWrong) {
             this.clear()
@@ -91,25 +69,17 @@ export default {
             clearTimeout(this.isClickedTimer)
           } else {
             if (this.playerSequel.length == this.sequel.length) {
-              this.playerSequel = []
+              clearTimeout(this.isClickedTimer)
               this.round++
-              this.restart()
+
+              setTimeout(() => {
+                this.playerSequel = []
+                this.restart()
+              }, 2000)
             }
           }
         }
-
-        clearTimeout(this.isClickedTimer)
       }
-
-      /* this.isWrong = !(this.sequel[addedIndex] == this.playerSequel[addedIndex])
-
-      if (!(this.sequel[addedIndex] == this.playerSequel[addedIndex])) {
-        this.clear()
-        this.restart()
-      } else {
-        this.round++
-        this.restart()
-      } */
     }
   },
   methods: {
@@ -147,7 +117,7 @@ export default {
           this.isShowing = false
           this.checkClicked()
         } else {
-          this.playSound()
+          this.playSound(this.sequel[this.currentIndex])
           this.currentShow = this.sequel[this.currentIndex]
           this.currentIndex++
         }
@@ -157,17 +127,14 @@ export default {
         }, 300)
       }, 500)
     },
-    playSound: function() {
-      const sound = new Audio(require('@/assets/audio/beep.wav'))
+    playSound: function(id) {
+      const sound = new Audio(require(`@/assets/audio/${Number(id) + 1}.mp3`))
       sound.play()
     },
     getNext: function() {
       let max = 3
       let min = 0
       return (Math.random() * (max - min) + min).toFixed(0)
-    },
-    check: function(index) {
-      return index == this.sequel[this.currentIndex]
     },
     checkClicked: function() {
       console.log('setted checker clicker')
@@ -181,11 +148,12 @@ export default {
     },
     click: function(id) {
       if (!this.isShowing && this.isStarted) {
+        this.playSound(id)
         this.isClicked = true
         clearTimeout(this.isClickedTimer)
-        this.checkClicked()
         console.log('click')
         this.playerSequel.push(id)
+        this.checkClicked()
       }
     },
     chooseSeverity: function(speed) {
