@@ -1,0 +1,58 @@
+#app {
+  max-width: 1200px;
+  margin-left: auto;
+  margin-right: auto;
+  color: #2c3e50;
+}
+
+.sections {
+  width: 200px;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.section {
+  width: 100px;
+  height: 100px;
+  box-sizing: border-box;
+
+  &:hover {
+    cursor: pointer;
+  }
+
+  &.red {
+    background-color: #ff5454;
+    &.active, &:hover {
+      background-color: red;
+      border: 3px solid black;
+    }
+  }
+
+  &.blue {
+    background-color: #4e4eff;
+    &.active, &:hover {
+      background-color: blue;
+      border: 3px solid black;
+    }
+  }
+
+  &.green {
+    background-color: #00ac00;
+    &.active, &:hover {
+      background-color: green;
+      border: 3px solid black;
+    }
+  }
+
+  &.yellow {
+    background-color: #fafa71;
+    &.active, &:hover {
+      background-color: yellow;
+      border: 3px solid black;
+    }
+  }
+  &.gray {
+    background-color: gray;
+  }
+
+}
