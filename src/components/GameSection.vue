@@ -1,7 +1,5 @@
 <template>
-  <div :class="['section', color, {active: active}]">
-    {{ activeInput }}
-  </div>
+  <div :class="['section', color, {active: activeInput}]" @click="click"></div>
 </template>
 <script>
 export default {
@@ -14,6 +12,9 @@ export default {
     },
     activeInput: {
       type: Boolean
+    },
+    id: {
+      type: Number
     }
   },
   data() {
@@ -22,24 +23,22 @@ export default {
     }
   },
   mounted() {
-    console.log('section active mounted')
+    //console.log('section active mounted')
     this.active = this.activeInput
-    console.log(this.active)
+    //console.log(this.active)
   },
   updated() {
-    console.log('section active updated')
+    //console.log('section active updated')
     this.active = this.activeInput
-    console.log(this.active)
+    //console.log(this.active)
     setTimeout(() => {
       this.active = false
     }, 200)
-  }
-  /*watch: {
-    active: function(val) {
-      setTimeout(() => {
-        this.active = false
-      }, 1000)
+  },
+  methods: {
+    click: function() {
+      this.$emit('click', this.id)
     }
-  } */
+  }
 }
 </script>
